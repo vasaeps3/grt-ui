@@ -27,8 +27,8 @@
         <q-separator inset />
         <q-card-section>
           <div class="row">
-            <div class="col">
-              asds
+            <div class="col-6" v-for="item in optionList" :key="item.val">
+              <q-checkbox v-model="optionsNpm" :val="item.val" :label="item.label" />
             </div>
           </div>
         </q-card-section>
@@ -36,23 +36,49 @@
       <div>
         <q-btn label="Submit" type="submit" color="primary" />
       </div>
+      {{optionsNpm}}
     </q-form>
   </div>
 </template>
 
 <script>
+const formSetting = [
+  {
+    type: 'npm',
+    data: [
+      { val: 'deps', label: 'deps' },
+      { val: 'devDeps', label: 'devDeps' },
+      { val: 'peerDeps', label: 'peerDeps' },
+      { val: 'yarn.lock', label: 'yarn.lock' },
+      { val: 'package-lock.json', label: 'package-lock.json' },
+    ],
+  }, {
+    type: 'node',
+    data: [
+      { val: '.nvmrc', label: '.nvmrc' },
+      { val: 'package.json', label: 'package.json' },
+      { val: 'engince', label: 'engince' },
+    ],
+  },
+];
+
 export default {
   name: 'main-form',
   data() {
     return {
       type: 'npm',
       pkgVersion: '',
-      a: 12,
+      optionsNpm: [],
     };
   },
   computed: {
     isNode() {
       return this.type === 'node';
+    },
+    optionList() {
+      const setting = formSetting.find(t => t.type === this.type);
+
+      return setting ? setting.data : [];
     },
   },
   methods: {
@@ -60,12 +86,19 @@ export default {
       if (this.isNode) {
         return true;
       }
-      console.log('testRule');
-      console.log(this.isNode);
+
       return val && val.length > 0;
     },
     onSubmit() {
-      console.log('onSubmit');
+      console.log(`type - ${this.type}`);
+      console.log(`pkgVersion - ${this.pkgVersion}`);
+      console.log(`optionsNpm - ${this.optionsNpm}`);
+    },
+  },
+  watch: {
+    type() {
+      this.optionsNpm = [];
+      this.pkgVersion = '';
     },
   },
 };
