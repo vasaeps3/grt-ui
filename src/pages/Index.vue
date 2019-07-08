@@ -1,6 +1,6 @@
 <template>
-  <q-page class="flex flex-center">
-    <img alt="Quasar logo" src="~assets/quasar-logo-full.svg">
+  <q-page class="flex justify-center">
+    <main-form />
   </q-page>
 </template>
 
@@ -8,7 +8,13 @@
 </style>
 
 <script>
+import MainFormVue from '../components/main-form/MainForm.vue';
+
+
 export default {
+  components: {
+    'main-form': MainFormVue,
+  },
   name: 'PageIndex',
 };
 </script>
